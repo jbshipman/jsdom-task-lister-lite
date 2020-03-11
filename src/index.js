@@ -1,31 +1,29 @@
+const taskArray = [];
+
 document.addEventListener("DOMContentLoaded", () => {
-  //grab all the necessary DOM elements
-
-  //form and relevant input fields
-  const newTaskForm = document.getElementById("create-task-form");
-  const newTaskDescription = document.getElementById("new-task-description");
-  const newTaskPriority = document.getElementById("new-task-priority");
-
-  //ul where new tasks will live on the DOM
-  const newTaskUl = document.getElementById("tasks");
-
-  //attach event listeners
-  newTaskForm.addEventListener("submit", createNewTask);
+  const taskForm = document.getElementById("create-task-form");
+  // console.log("Dom loaded");
+  taskForm.addEventListener("submit", addToTaskList);
 });
 
-const createNewTask = event => {
-  event.preventDefault();
-  //stop form from trying to submit
-  const newTaskName = document.getElementById("test-task-name");
-  const newTaskDescription = document.getElementById("new-task-description");
-  const newTask = document.createElement("li");
-  
-  newTask.innerText = `${newTaskName.value}, ${newTaskDescription.value}`;
-
-  appendNewTask(newTask);
-  event.target.reset();
+function addToTaskList(event) {
+  event.preventDefault(); 
+  // console.log(event);
+  let text = document.getElementById("new-task-description").value;
+  taskArray.push(text);
+  // console.log(taskArray);
+  displayList();
 };
 
-const appendNewTask = task => {
-  document.getElementById("tasks").appendChild(task);
+function displayList(){
+  const taskList = document.getElementById("tasks");
+  // taskList.innerHTML = ""; // equivalent to the below, but slightly slower which doesn't matter.
+  while(taskList.hasChildNodes()) {
+    taskList.childNodes[0].remove();
+  }
+  for(let i=0; i < taskArray.length; i++) {
+    let li = document.createElement("li");
+    li.innerText = taskArray[i];
+    taskList.appendChild(li);
+  }
 };
